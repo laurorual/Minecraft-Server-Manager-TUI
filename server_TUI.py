@@ -363,6 +363,19 @@ class McManagerApp(App):
         elif event.button.id == "btn-args":
             await self.action_change_args()
 
+# --- FUNÇÃO DE SAÍDA SEGURA ---
+    async def action_quit(self) -> None:
+        """Sobrescreve a ação de sair (tecla Q) para desligar o servidor com segurança antes de fechar a TUI."""
+        
+        if self.server_process is not None and self.server_process.returncode is None:
+            console = self.query_one("#console-log", RichLog)
+            self.update_status("Shutting down...", "yellow")
+            console.write("\n[bold red][System] Closing application... Stopping the server safely, please wait![/bold red]")
+            self.server_process.stdin.write(b"stop\n")
+            await self.server_process.stdin.drain()
+            await self.server_process.wait()
+        self.exit()
+
 if __name__ == "__main__":
     app = McManagerApp()
     app.run()
