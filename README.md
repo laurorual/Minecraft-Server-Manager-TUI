@@ -31,7 +31,7 @@ Important: Place your Minecraft server files in the same folder! Server file mus
 
 Run the application using Python:
 ```
-python manager.py
+python server_TUI.py
 ```
 
 ## ⌨️ Key Bindings
